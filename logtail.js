@@ -7,7 +7,10 @@ var dataelem = "#data";
 var pausetoggle = "#pause";
 var scrollelems = ["html", "body"];
 
-var url = "log";
+var urlString = window.location.href;
+var urlObject = new URL(urlString);
+var urlParam = urlObject.searchParams.get("url");
+var url = urlParam ?? "log"
 var fix_rn = true;
 var load = 30 * 1024; /* 30KB */
 var poll = 1000; /* 1s */
@@ -146,7 +149,7 @@ function show_log() {
     if (reverse) {
         var t_a = t.split(/\n/g);
         t_a.reverse();
-        if (t_a[0] == "") 
+        if (t_a[0] == "")
             t_a.shift();
         t = t_a.join("\n");
     }
@@ -163,7 +166,7 @@ function error(what) {
     kill = true;
 
     $(dataelem).text("An error occured :-(.\r\n" +
-                     "Reloading may help; no promises.\r\n" + 
+                     "Reloading may help; no promises.\r\n" +
                      what);
     scroll(0);
 
