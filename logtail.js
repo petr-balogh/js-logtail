@@ -10,6 +10,8 @@ var scrollelems = ["html", "body"];
 var urlString = window.location.href;
 var urlObject = new URL(urlString);
 var urlParam = urlObject.searchParams.get("url");
+var orderParam = urlObject.searchParams.get("order");
+var order = orderParam ?? "reversed"
 var url = urlParam ?? "log"
 var fix_rn = true;
 var load = 30 * 1024; /* 30KB */
@@ -173,13 +175,21 @@ function error(what) {
     return false;
 }
 
+function order(how) {
+    var searchParams = new URLSearchParams(window.location.search)
+    searchParams.set(order, how)
+    window.location.search = searchParams.toString()
+}
+
 $(document).ready(function () {
     window.onerror = error;
 
-    /* If URL is /logtail/?noreverse display in chronological order */
-    var hash = location.search.replace(/^\?/, "");
-    if (hash == "noreverse")
+    /* If URL is /logtail/?order=chronological we display in chronological order */
+    if (order == "chronological") {
         reverse = false;
+    } else {
+        reverse = true;
+    }
 
     /* Add pause toggle */
     $(pausetoggle).click(function (e) {
