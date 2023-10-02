@@ -5,6 +5,8 @@
 
 var dataelem = "#data";
 var pausetoggle = "#pause";
+var reversedLink = "#reversedOrder";
+var chronologicalLink = "#chronologicalOrder";
 var scrollelems = ["html", "body"];
 
 var urlString = window.location.href;
@@ -175,10 +177,12 @@ function error(what) {
     return false;
 }
 
-function order(how) {
+function changeOrder(how) {
     var searchParams = new URLSearchParams(window.location.search)
-    searchParams.set(order, how)
+    searchParams.set("order", how)
     window.location.search = searchParams.toString()
+    const originalURL = new URL("http://my.app/index.html?orde=reverse");
+    const updatedURL = addParameterToURL(originalURL, "newParam", "someValue");
 }
 
 $(document).ready(function () {
@@ -191,6 +195,12 @@ $(document).ready(function () {
         reverse = true;
     }
 
+    $(reversedLink).click(function (e) {
+	changeOrder("reversed");
+    });
+    $(chronologicalLink).click(function (e) {
+	changeOrder("chronological");
+    });
     /* Add pause toggle */
     $(pausetoggle).click(function (e) {
         pause = !pause;
